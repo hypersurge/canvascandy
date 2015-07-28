@@ -1,5 +1,5 @@
-# eyecandy
-Aesthetic effects for awe6.  This public collection is TBD as we collate various visual effects used in our games catalogue.
+# canvascandy
+Aesthetic effects for awe6 (using HTML5 Canvas).  This public collection is TBD as we collate various visual effects used in our games catalogue.
 
 Our priority is to focus on HTML5 Canvas ports that work across today's mobile web devices.  This code is unlikely to be released as a library given the general-collection nature of the contents, and so should be viewed as reference material.
 
