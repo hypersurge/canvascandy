@@ -9,7 +9,7 @@ Examples:
 * Bloom filters
 * Motion blurs
 * 2.5D planes (aka Mode7)
-* Normal mapping / realtime light shading
+* Normal mapping / realtime light shading (Completed)
 * Bitmap distortions
 * Basic prebaked particles
 * Scene Transitions
@@ -18,4 +18,4 @@ Examples:
 * Dirty lens
 * And MOAR LENS FLARES!
 
-Actual code coming soon!
+See some [examples](http://hypersurge.github.io/canvascandy/).
