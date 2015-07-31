@@ -7,6 +7,7 @@ import awe6.interfaces.ETextStyle;
 import awe6.interfaces.IScene;
 import awe6.interfaces.ITextStyle;
 import demo.scenes.SceneNormalMapping;
+import demo.scenes.SceneShine;
 
 /**
  * ...
@@ -28,7 +29,7 @@ class Factory extends AFactory
 			height = 400;
 			bgColor = 0xFF0080FF;
 			startingSceneType = TEST;
-			targetFramerate = 60;
+			targetFramerate = 30;
 			isFixedUpdates = false;
 		}
 	}
@@ -36,6 +37,7 @@ class Factory extends AFactory
 	override public function createScene( p_type:EScene ):IScene 
 	{
 		return new SceneNormalMapping( _kernel, p_type, true, true );
+//		return new SceneShine( _kernel, p_type, true, true );
 	}
 	
 	override public function createTextStyle( ?p_type:ETextStyle ):ITextStyle 

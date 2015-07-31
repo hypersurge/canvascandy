@@ -63,6 +63,7 @@ class NormalMapping extends Entity
 		_context.cache( 0, 0, _width, _height );
 		_canvas = _context.cacheCanvas;
 		_context2d = _canvas.getContext2d();
+		_context2d.drawImage( _texture, 0, 0 );
 		_buffer = _context2d.getImageData( 0, 0, _width, _height );
 		_normalData = _precalculateNormalData( _normal );
 		_textureData = _getDataFromImage( _texture ).data;
@@ -155,31 +156,34 @@ class NormalMapping extends Entity
 		{
 			for ( l_x in 0..._width )
 			{
-				// get surface normal
-				l_nx = _normalData[l_ni];
-				l_ny = _normalData[l_ni + 1];
-				l_nz = _normalData[l_ni + 2];
-				// make it a bit faster by only updateing the direction for every other pixel
-				if ( _spotlight > 0 || ( l_ni & 1 ) == 0 )
+				if ( l_data[l_i + 3] != 0 ) // skip transparent pixels
 				{
-					// calculate the light direction vector
-					l_dx = _spotlightX - l_x;
-					l_dy = _spotlightY - l_y;
-					l_dz = _spotlightZ;
-					// normalize it
-					l_magInv = _NORMAL_LEVELS / Math.sqrt( ( l_dx * l_dx ) + ( l_dy * l_dy ) + ( l_dz * l_dz ) );
-					l_dx = Std.int( l_dx * l_magInv );
-					l_dy = Std.int( l_dy * l_magInv );
-					l_dz = Std.int( l_dz * l_magInv );
-					// take the dot product of the direction and the normal to get the amount of shine
-					l_dotProduct = ( l_dx * l_nx ) + ( l_dy * l_ny ) + ( l_dz * l_nz );
-					l_intensity = ( Math.pow( l_dotProduct / ( _NORMAL_LEVELS * _NORMAL_LEVELS ), _shine ) * _spotlight ) + _ambient;
+					// get surface normal
+					l_nx = _normalData[l_ni];
+					l_ny = _normalData[l_ni + 1];
+					l_nz = _normalData[l_ni + 2];
+					// make it a bit faster by only updateing the direction for every other pixel
+					if ( _spotlight > 0 || ( l_ni & 1 ) == 0 )
+					{
+						// calculate the light direction vector
+						l_dx = _spotlightX - l_x;
+						l_dy = _spotlightY - l_y;
+						l_dz = _spotlightZ;
+						// normalize it
+						l_magInv = _NORMAL_LEVELS / Math.sqrt( ( l_dx * l_dx ) + ( l_dy * l_dy ) + ( l_dz * l_dz ) );
+						l_dx = Std.int( l_dx * l_magInv );
+						l_dy = Std.int( l_dy * l_magInv );
+						l_dz = Std.int( l_dz * l_magInv );
+						// take the dot product of the direction and the normal to get the amount of shine
+						l_dotProduct = ( l_dx * l_nx ) + ( l_dy * l_ny ) + ( l_dz * l_nz );
+						l_intensity = ( Math.pow( l_dotProduct / ( _NORMAL_LEVELS * _NORMAL_LEVELS ), _shine ) * _spotlight ) + _ambient;
+					}
+					for ( l_channel in 0...3 )
+					{
+						l_data[l_i + l_channel] = Math.round( _clampInt( Std.int( _textureData[l_i + l_channel] * l_intensity ), 0, 255 ) );
+					}
+					l_data[l_i + 3] = _textureData[l_i + 3];
 				}
-				for ( l_channel in 0...3 )
-				{
-					l_data[l_i + l_channel] = Math.round( _clampInt( Std.int( _textureData[l_i + l_channel] * l_intensity ), 0, 255 ) );
-				}
-				l_data[l_i + 3] = _textureData[l_i + 3];
 				l_i += 4;
 				l_ni += 3;
 			}
