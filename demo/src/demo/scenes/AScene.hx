@@ -1,17 +1,15 @@
-package demo;
+package demo.scenes;
 import awe6.core.drivers.createjs.extras.gui.Text;
 import awe6.core.Scene;
 import awe6.interfaces.EScene;
 import awe6.interfaces.IKernel;
-import canvascandy.normalmapping.NormalMapping;
-import canvascandy.Utils;
 
 /**
  * A simple test scene
  * @author	Robert Fell
  */
 
-class Test extends Scene 
+class AScene extends Scene 
 {
 	private var _text:Text;
 	
@@ -23,10 +21,7 @@ class Test extends Scene
 	override function _init():Void 
 	{
 		super._init();
-		
-		addEntity( new NormalMapping( _kernel, Utils.getImage( Assets.normalmapping_texture__jpg ), Utils.getImage( Assets.normalmapping_normal__jpg ) ), true, 1 );
-		
-		_text = new Text( _kernel, _kernel.factory.width, 30, "Test", _kernel.factory.createTextStyle() );
+		_text = new Text( _kernel, _kernel.factory.width, 30, "", _kernel.factory.createTextStyle() );
 		_text.setPosition( 0, _kernel.factory.height - _text.height );
 		addEntity( _text, true, 10 );
 	}

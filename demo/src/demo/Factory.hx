@@ -6,10 +6,11 @@ import awe6.interfaces.ETextAlign;
 import awe6.interfaces.ETextStyle;
 import awe6.interfaces.IScene;
 import awe6.interfaces.ITextStyle;
+import demo.scenes.SceneNormalMapping;
 
 /**
  * ...
- * @author 
+ * @author	Robert Fell
  */
 
 class Factory extends AFactory 
@@ -34,7 +35,7 @@ class Factory extends AFactory
 	
 	override public function createScene( p_type:EScene ):IScene 
 	{
-		return new Test( _kernel, p_type, true, true );
+		return new SceneNormalMapping( _kernel, p_type, true, true );
 	}
 	
 	override public function createTextStyle( ?p_type:ETextStyle ):ITextStyle 
