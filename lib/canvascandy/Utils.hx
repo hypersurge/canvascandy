@@ -5,7 +5,7 @@ import js.html.ImageElement;
 
 /**
  * ...
- * @author 
+ * @author	Robert Fell
  */
 class Utils
 {
@@ -35,7 +35,7 @@ class Utils
 	public static function createCanvasFromImage( p_image:ImageElement ):CanvasElement
 	{
 		var l_result = createCanvas( p_image.width, p_image.height );
-        l_result.getContext2d().drawImage( p_image, 0, 0 );
+		l_result.getContext2d().drawImage( p_image, 0, 0 );
 		return l_result;
 	}
 	

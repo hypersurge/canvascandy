@@ -65,7 +65,7 @@ class NormalMapping extends Entity
 		_context2d = _canvas.getContext2d();
 		_buffer = _context2d.getImageData( 0, 0, _width, _height );
 		_normalData = _precalculateNormalData( _normal );
-        _textureData = _getDataFromImage( _texture ).data;
+		_textureData = _getDataFromImage( _texture ).data;
 		_spotlightX = 0;
 		_spotlightY = 0;
 		_spotlightZ = Math.round( Math.sqrt( ( _width * _width ) + ( _height * _height ) ) / 4 );
@@ -94,7 +94,7 @@ class NormalMapping extends Entity
 	private function _getDataFromImage( p_image:ImageElement ):ImageData
 	{
 		return Utils.createCanvasFromImage( p_image ).getContext2d().getImageData( 0, 0, p_image.width, p_image.height );
-    }
+	}
 	
 	private function _precalculateNormalData( p_normal:ImageElement ):Array<Int>
 	{
@@ -108,21 +108,21 @@ class NormalMapping extends Entity
 		var l_max:Int = _width * _height * 4;
 		while ( l_i < l_max )
 		{
-            l_nx = l_data[l_i];
-            l_ny = 255 - l_data[l_i + 1];
-            l_nz = l_data[l_i + 2];
-            // normalize
-            l_magInv = 1 / Math.sqrt( ( l_nx * l_nx ) + ( l_ny * l_ny ) + ( l_nz * l_nz ) );
+			l_nx = l_data[l_i];
+			l_ny = 255 - l_data[l_i + 1];
+			l_nz = l_data[l_i + 2];
+			// normalize
+			l_magInv = 1 / Math.sqrt( ( l_nx * l_nx ) + ( l_ny * l_ny ) + ( l_nz * l_nz ) );
 			if ( !Math.isFinite( l_magInv ) || ( l_magInv > 1000 ) )
 			{
 				l_magInv = 1000;
 			}
-            l_nx = Std.int( l_nx * l_magInv * _NORMAL_LEVELS );
-            l_ny = Std.int( l_ny * l_magInv * _NORMAL_LEVELS );
-            l_nz = Std.int( l_nz * l_magInv * _NORMAL_LEVELS );
-            l_result.push( l_nx );
-            l_result.push( l_ny );
-            l_result.push( l_nz );
+			l_nx = Std.int( l_nx * l_magInv * _NORMAL_LEVELS );
+			l_ny = Std.int( l_ny * l_magInv * _NORMAL_LEVELS );
+			l_nz = Std.int( l_nz * l_magInv * _NORMAL_LEVELS );
+			l_result.push( l_nx );
+			l_result.push( l_ny );
+			l_result.push( l_nz );
 			l_i += 4;
 		}
 		return l_result;
