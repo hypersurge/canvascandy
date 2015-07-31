@@ -6,6 +6,7 @@ import awe6.interfaces.ETextAlign;
 import awe6.interfaces.ETextStyle;
 import awe6.interfaces.IScene;
 import awe6.interfaces.ITextStyle;
+import demo.scenes.SceneBlur;
 import demo.scenes.SceneNormalMapping;
 import demo.scenes.SceneShine;
 
@@ -36,7 +37,8 @@ class Factory extends AFactory
 	
 	override public function createScene( p_type:EScene ):IScene 
 	{
-		return new SceneNormalMapping( _kernel, p_type, true, true );
+		return new SceneBlur( _kernel, p_type, true, true );
+//		return new SceneNormalMapping( _kernel, p_type, true, true );
 //		return new SceneShine( _kernel, p_type, true, true );
 	}
 	
