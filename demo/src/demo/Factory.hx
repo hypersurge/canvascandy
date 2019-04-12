@@ -22,7 +22,7 @@ class Factory extends AFactory
 			width = 720;
 			height = 400;
 			bgColor = 0xFF0080FF;
-			startingSceneType = AScene.SCENE_SHINE;
+			startingSceneType = AScene.SCENE_PLANE;
 			targetFramerate = 30;
 			isFixedUpdates = false;
 		}
@@ -32,6 +32,7 @@ class Factory extends AFactory
 	{
 		if ( p_type == AScene.SCENE_BLUR ) return new SceneBlur( _kernel, p_type, true, true );
 		if ( p_type == AScene.SCENE_NORMAL_MAPPING ) return new SceneNormalMapping( _kernel, p_type, true, true );
+		if ( p_type == AScene.SCENE_PLANE ) return new ScenePlane( _kernel, p_type, true, true );
 		if ( p_type == AScene.SCENE_SHINE ) return new SceneShine( _kernel, p_type, true, true );
 		return super.createScene( p_type );
 	}

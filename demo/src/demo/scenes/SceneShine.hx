@@ -14,6 +14,6 @@ class SceneShine extends AScene
 		super._init();
 		addEntity( new Image( _kernel, _kernel.assets.getAsset( Assets.shine_ButtonOver__png ) ), true, 1 );
 		addEntity( new Shine( _kernel, _kernel.assets.getAsset( Assets.shine_ButtonShine__png ) ), true, 2 );
-		_text.text = "#3 Shine";
+		_text.text = "#4 Shine";
 	}
 }

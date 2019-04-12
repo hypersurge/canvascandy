@@ -12,6 +12,7 @@ class AScene extends Scene
 {
 	public static var SCENE_BLUR = EScene.SUB_TYPE( "SCENE_BLUR" );
 	public static var SCENE_NORMAL_MAPPING = EScene.SUB_TYPE( "SCENE_NORMAL_MAPPING" );
+	public static var SCENE_PLANE = EScene.SUB_TYPE( "SCENE_PLANE" );
 	public static var SCENE_SHINE = EScene.SUB_TYPE( "SCENE_SHINE" );
 	
 	private var _text:Text;
@@ -32,9 +33,14 @@ class AScene extends Scene
 	override function _updater( p_deltaTime:Int = 0 ):Void 
 	{
 		super._updater( p_deltaTime );
-		var l_keyboard = _kernel.inputs.keyboard.getIsKeyPress;
-		if ( l_keyboard( EKey.NUMBER_1 ) ) _kernel.scenes.setScene( SCENE_BLUR );
-		if ( l_keyboard( EKey.NUMBER_2 ) ) _kernel.scenes.setScene( SCENE_NORMAL_MAPPING );
-		if ( l_keyboard( EKey.NUMBER_3 ) ) _kernel.scenes.setScene( SCENE_SHINE );
+		try
+		{
+			var l_keyboard = _kernel.inputs.keyboard;
+			if ( l_keyboard.getIsKeyRelease( EKey.NUMBER_1 ) ) _kernel.scenes.setScene( SCENE_BLUR );
+			if ( l_keyboard.getIsKeyRelease( EKey.NUMBER_2 ) ) _kernel.scenes.setScene( SCENE_NORMAL_MAPPING );
+			if ( l_keyboard.getIsKeyRelease( EKey.NUMBER_3 ) ) _kernel.scenes.setScene( SCENE_PLANE );
+			if ( l_keyboard.getIsKeyRelease( EKey.NUMBER_4 ) ) _kernel.scenes.setScene( SCENE_SHINE );
+		}
+		catch( p_error:Dynamic ) {}
 	}
 }
