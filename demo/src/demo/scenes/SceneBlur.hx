@@ -13,8 +13,8 @@ class SceneBlur extends AScene
 	override function _init():Void 
 	{
 		super._init();
-		addEntity( _blur = new Blur( _kernel, Utils.getImage( Assets.normalmapping_texture__png ) ), true, 2 );
-		_text.text = "Blur";
+		addEntity( _blur = new Blur( _kernel, _kernel.assets.getAsset( Assets.normalmapping_texture__png ) ), true, 2 );
+		_text.text = "#1 Blur";
 	}
 	
 	override private function _updater( p_deltaTime:Int = 0 ):Void 

@@ -1,14 +1,7 @@
 package demo;
-import awe6.core.AFactory;
-import awe6.core.TextStyle;
-import awe6.interfaces.EScene;
-import awe6.interfaces.ETextAlign;
-import awe6.interfaces.ETextStyle;
-import awe6.interfaces.IScene;
-import awe6.interfaces.ITextStyle;
-import demo.scenes.SceneBlur;
-import demo.scenes.SceneNormalMapping;
-import demo.scenes.SceneShine;
+import awe6.core.*;
+import awe6.interfaces.*;
+import demo.scenes.*;
 
 /**
  * ...
@@ -29,7 +22,7 @@ class Factory extends AFactory
 			width = 720;
 			height = 400;
 			bgColor = 0xFF0080FF;
-			startingSceneType = TEST;
+			startingSceneType = AScene.SCENE_SHINE;
 			targetFramerate = 30;
 			isFixedUpdates = false;
 		}
@@ -37,9 +30,10 @@ class Factory extends AFactory
 	
 	override public function createScene( p_type:EScene ):IScene 
 	{
-		return new SceneBlur( _kernel, p_type, true, true );
-//		return new SceneNormalMapping( _kernel, p_type, true, true );
-//		return new SceneShine( _kernel, p_type, true, true );
+		if ( p_type == AScene.SCENE_BLUR ) return new SceneBlur( _kernel, p_type, true, true );
+		if ( p_type == AScene.SCENE_NORMAL_MAPPING ) return new SceneNormalMapping( _kernel, p_type, true, true );
+		if ( p_type == AScene.SCENE_SHINE ) return new SceneShine( _kernel, p_type, true, true );
+		return super.createScene( p_type );
 	}
 	
 	override public function createTextStyle( ?p_type:ETextStyle ):ITextStyle 

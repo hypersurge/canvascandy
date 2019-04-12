@@ -12,8 +12,8 @@ class SceneShine extends AScene
 	override function _init():Void 
 	{
 		super._init();
-		addEntity( new Image( _kernel, Assets.shine_ButtonOver__png ), true, 1 );
-		addEntity( new Shine( _kernel, Utils.getImage( Assets.shine_ButtonShine__png ) ), true, 2 );
-		_text.text = "Shine";
+		addEntity( new Image( _kernel, _kernel.assets.getAsset( Assets.shine_ButtonOver__png ) ), true, 1 );
+		addEntity( new Shine( _kernel, _kernel.assets.getAsset( Assets.shine_ButtonShine__png ) ), true, 2 );
+		_text.text = "#3 Shine";
 	}
 }

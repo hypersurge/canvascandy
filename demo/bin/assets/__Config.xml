@@ -4,6 +4,7 @@
 		<assets>
 			<packages default="assets" audio="assets.audio" />
 		</assets>
+		<audioHoldDelay>0</audioHoldDelay>
 		<fullScreen>default</fullScreen>
 		<font name="orbitron-webfont" />
 		<asciiArt>
