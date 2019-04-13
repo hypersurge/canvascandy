@@ -48,12 +48,14 @@ private typedef _TBounds =
 class Plane extends Entity 
 {	
 	private var _texture:ImageElement;
+	private var _textureCanvas:CanvasElement;
 	private var _width:Int;
 	private var _height:Int;
 	private var _subs:Int;
 	private var _divs:Int;
 	private var _edgeBleed:Float;
 	private var _isBoundsEnabled:Bool;
+	private var _isTextureUsingCanvas:Bool;
 	private var _context:Context;
 	private var _textureWidth:Int;
 	private var _textureHeight:Int;
@@ -62,7 +64,7 @@ class Plane extends Entity
 	
 	private var _triangles: Array<_TTriangle> = [];
 	
-	public function new( p_kernel:IKernel, p_texture:ImageElement, ?p_width:Int, ?p_height: Int, p_subs:Int = 6, p_divs:Int = 6, p_edgeBleed:Float = .01, p_isBoundsEnabled: Bool = false )
+	public function new( p_kernel:IKernel, p_texture:ImageElement, ?p_width:Int, ?p_height: Int, p_subs:Int = 6, p_divs:Int = 6, p_edgeBleed:Float = .02, p_isBoundsEnabled: Bool = false, p_isTextureUsingCanvas:Bool = false )
 	{
 		_context = new Context();
 		_texture = p_texture;
@@ -72,6 +74,7 @@ class Plane extends Entity
 		_divs = p_divs > 0 ? p_divs : 1;
 		_edgeBleed = p_edgeBleed;
 		_isBoundsEnabled = p_isBoundsEnabled;
+		_isTextureUsingCanvas = p_isTextureUsingCanvas;
 		super( p_kernel, _context );
 	}
 	
@@ -83,6 +86,8 @@ class Plane extends Entity
 		_context.cache( 0, 0, _width, _height );
 		_canvas = _context.cacheCanvas;
 		_context2d = _canvas.getContext2d();
+		_context2d.imageSmoothingEnabled = false;
+		_textureCanvas = Utils.createCanvasFromImage( _texture );
 	}
 	
 	public function configure( p_point1: _TPoint, p_point2: _TPoint, p_point3: _TPoint, p_point4: _TPoint, p_isWireframe:Bool = false ):Void
@@ -90,10 +95,11 @@ class Plane extends Entity
 		_context2d.clearRect( 0, 0, _canvas.width, _canvas.height );
 		_calculateGeometry( p_point1, p_point2, p_point3, p_point4 );
 		if ( _isBoundsEnabled ) _calculateBounds( createPoint( 0, 0 ), createPoint( _width, _height ) );
-		for ( l_triangle in _triangles ) _draw( l_triangle, p_isWireframe );
+		var l_texture = _isTextureUsingCanvas ? _textureCanvas : _texture;
+		for ( l_triangle in _triangles ) _draw( l_triangle, l_texture, p_isWireframe );
 	}
 	
-	private function _draw( p_triangle:_TTriangle, p_isWireframe: Bool = false ):Void
+	private function _draw( p_triangle:_TTriangle, p_texture: Dynamic, p_isWireframe: Bool = false ):Void
 	{
 		if ( p_isWireframe )
 		{
@@ -108,7 +114,7 @@ class Plane extends Entity
 	    }
 		if ( !p_triangle.isInsideBounds ) return;
 	    _drawTriangle(
-			_context2d, _texture,
+			_context2d, p_texture,
 			p_triangle.p0.x, p_triangle.p0.y,
 			p_triangle.p1.x, p_triangle.p1.y,
 			p_triangle.p2.x, p_triangle.p2.y,
