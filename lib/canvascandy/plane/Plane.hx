@@ -48,23 +48,23 @@ private typedef _TBounds =
 class Plane extends Entity 
 {	
 	private var _texture:ImageElement;
-	private var _textureCanvas:CanvasElement;
 	private var _width:Int;
 	private var _height:Int;
 	private var _subs:Int;
 	private var _divs:Int;
 	private var _edgeBleed:Float;
 	private var _isBoundsEnabled:Bool;
-	private var _isTextureUsingCanvas:Bool;
 	private var _context:Context;
 	private var _textureWidth:Int;
 	private var _textureHeight:Int;
+	private var _divWidth:Float;
+	private var _subHeight:Float;
 	private var _canvas:CanvasElement;
 	private var _context2d:CanvasRenderingContext2D;
 	
 	private var _triangles: Array<_TTriangle> = [];
 	
-	public function new( p_kernel:IKernel, p_texture:ImageElement, ?p_width:Int, ?p_height: Int, p_subs:Int = 6, p_divs:Int = 6, p_edgeBleed:Float = .02, p_isBoundsEnabled: Bool = false, p_isTextureUsingCanvas:Bool = false )
+	public function new( p_kernel:IKernel, p_texture:ImageElement, ?p_width:Int, ?p_height: Int, p_subs:Int = 7, p_divs:Int = 7, p_edgeBleed:Float = .02, p_isBoundsEnabled: Bool = false )
 	{
 		_context = new Context();
 		_texture = p_texture;
@@ -74,7 +74,6 @@ class Plane extends Entity
 		_divs = p_divs > 0 ? p_divs : 1;
 		_edgeBleed = p_edgeBleed;
 		_isBoundsEnabled = p_isBoundsEnabled;
-		_isTextureUsingCanvas = p_isTextureUsingCanvas;
 		super( p_kernel, _context );
 	}
 	
@@ -87,19 +86,22 @@ class Plane extends Entity
 		_canvas = _context.cacheCanvas;
 		_context2d = _canvas.getContext2d();
 		_context2d.imageSmoothingEnabled = false;
-		_textureCanvas = Utils.createCanvasFromImage( _texture );
+		_divWidth = Math.ceil( _textureWidth / _divs );
+		_subHeight = Math.ceil( _textureHeight / _subs );
 	}
 	
 	public function configure( p_point1: _TPoint, p_point2: _TPoint, p_point3: _TPoint, p_point4: _TPoint, p_isWireframe:Bool = false ):Void
 	{
+		_context2d.save();
+		_context2d.setTransform( 1, 0, 0, 1, 0, 0 );
 		_context2d.clearRect( 0, 0, _canvas.width, _canvas.height );
 		_calculateGeometry( p_point1, p_point2, p_point3, p_point4 );
 		if ( _isBoundsEnabled ) _calculateBounds( createPoint( 0, 0 ), createPoint( _width, _height ) );
-		var l_texture = _isTextureUsingCanvas ? _textureCanvas : _texture;
-		for ( l_triangle in _triangles ) _draw( l_triangle, l_texture, p_isWireframe );
+		for ( l_triangle in _triangles ) _draw( l_triangle, _texture, p_isWireframe );
+		_context2d.restore();
 	}
 	
-	private function _draw( p_triangle:_TTriangle, p_texture: Dynamic, p_isWireframe: Bool = false ):Void
+	private function _draw( p_triangle:_TTriangle, p_texture: ImageElement, p_isWireframe: Bool = false ):Void
 	{
 		if ( p_isWireframe )
 		{
@@ -171,7 +173,8 @@ class Plane extends Entity
 					l_point4,
 					_createTextureCoordinate( l_u1, l_v1 ),
 					_createTextureCoordinate( l_u2, l_v2 ),
-					_createTextureCoordinate( l_u1, l_v2 )
+					_createTextureCoordinate( l_u1, l_v2 ),
+					true
 				);
 				var l_triangle2 = _createTriangle(
 					l_point1,
@@ -179,7 +182,8 @@ class Plane extends Entity
 					l_point3,
 					_createTextureCoordinate( l_u1, l_v1 ),
 					_createTextureCoordinate( l_u2, l_v1 ),
-					_createTextureCoordinate( l_u2, l_v2 )
+					_createTextureCoordinate( l_u2, l_v2 ),
+					true
 				);
 				_triangles.push( l_triangle1 );
 				_triangles.push( l_triangle2 );
@@ -231,7 +235,7 @@ class Plane extends Entity
 		var l_dx = ( p_sx0 * ( p_sy2 * p_x1 - p_sy1 * p_x2 ) + p_sy0 * ( p_sx1 * p_x2 - p_sx2 * p_x1 ) + ( p_sx2 * p_sy1 - p_sx1 * p_sy2 ) * p_x0 ) / l_denominator;
 		var l_dy = ( p_sx0 * ( p_sy2 * p_y1 - p_sy1 * p_y2 ) + p_sy0 * ( p_sx1 * p_y2 - p_sx2 * p_y1 ) + ( p_sx2 * p_sy1 - p_sx1 * p_sy2 ) * p_y0 ) / l_denominator;
 		p_context2d.transform( l_m11, l_m12, l_m21, l_m22, l_dx, l_dy );
-		p_context2d.drawImage( p_imageElement, 0, 0 );
+		p_context2d.drawImage( p_imageElement, p_sx0, p_sy0, _divWidth, _subHeight, p_sx0, p_sy0, _divWidth, _subHeight );
 		p_context2d.restore();
 	}	
 	
